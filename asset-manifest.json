@@ -1,15 +1,15 @@
 {
   "files": {
-    "main.css": "/Dels-Monaco-Editor/static/css/main.88da7c47.css",
-    "main.js": "/Dels-Monaco-Editor/static/js/main.1e653074.js",
+    "main.css": "/Dels-Monaco-Editor/static/css/main.b5bc51ac.css",
+    "main.js": "/Dels-Monaco-Editor/static/js/main.e659d6cd.js",
     "static/js/787.d491e3ee.chunk.js": "/Dels-Monaco-Editor/static/js/787.d491e3ee.chunk.js",
     "index.html": "/Dels-Monaco-Editor/index.html",
-    "main.88da7c47.css.map": "/Dels-Monaco-Editor/static/css/main.88da7c47.css.map",
-    "main.1e653074.js.map": "/Dels-Monaco-Editor/static/js/main.1e653074.js.map",
+    "main.b5bc51ac.css.map": "/Dels-Monaco-Editor/static/css/main.b5bc51ac.css.map",
+    "main.e659d6cd.js.map": "/Dels-Monaco-Editor/static/js/main.e659d6cd.js.map",
     "787.d491e3ee.chunk.js.map": "/Dels-Monaco-Editor/static/js/787.d491e3ee.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.88da7c47.css",
-    "static/js/main.1e653074.js"
+    "static/css/main.b5bc51ac.css",
+    "static/js/main.e659d6cd.js"
   ]
 }
