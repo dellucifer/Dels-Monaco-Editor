@@ -2,13 +2,15 @@ import { useState } from "react";
 import "./App.css";
 import { Editor } from "@monaco-editor/react";
 import { FadeLoader } from "react-spinners";
-import Axios from 'axios';
+// import Axios from "axios";
 
 function App() {
   const options = {
     fontSize: 18,
   };
 
+
+// User Code Templates
   const c = {
     language: "c",
     template: `#include <stdio.h>
@@ -50,37 +52,124 @@ int main()
     template: `# Enter you code here`,
   };
 
-  const [language, setLanguage] = useState(c);
+  const [language, setLanguage] = useState(cpp);
   const [userInput, setUserInput] = useState("");
   const [userOutput, setUserOutput] = useState("");
   const [loading, setLoading] = useState(false);
   const [userCode, setUserCode] = useState(``);
+  const [status, setStatus] = useState("");
+  const [jobId, setJobId] = useState("")
 
-  function compile() {
+  const compile = async () => {
     setLoading(true);
     if (userCode === ``) {
+      setLoading(false);
       return;
     }
 
     // Post request to compile endpoint
-    Axios.post(`http://localhost:8000/compile`, {
-      code: userCode,
-      language: language.language,
-      input: userInput,
-    })
-      .then((res) => {
-        setUserOutput(res.data.output);
+    try{
+      // console.log(btoa(userCode), language.language)
+      // console.log(userCode)
+      setStatus("");
+      setJobId("");
+      setUserOutput("");
+      
+      const data = await fetch(`http://localhost:8000/run`, {
+      method: "POST",
+      headers: {
+        "content-type": "application/json"
+      },
+      body: JSON.stringify({
+        language: language.language,
+        code: btoa(userCode)
       })
-      .then(() => {
+    })
+
+    const res = await data.json();
+    console.log(res)
+    setJobId(res.jobId);
+    setLoading(false);
+    let intervalId;
+
+    intervalId = setInterval(async () => {
+            // const {data: dataRes} = await Axios.get(`http://localhost:8000/status`, {params: {id: res.data.jobId}})
+          const fetchJob = await fetch(`http://localhost:8000/status?id=${res.jobId}`, {
+            method: "GET",
+          })
+          const resData = await fetchJob.json();
+          console.log(resData);
+          const {success, job, error} = resData;
+
+          if(success){
+            const {status: jobStatus, output: jobOutput} = job;
+            setStatus(jobStatus);
+            if(jobStatus==='pending') return;
+
+            setUserOutput(jobOutput);
+            clearInterval(intervalId);
+          } else {
+            setStatus("Error!")
+            console.error(error);
+            setUserOutput(error);
+            clearInterval(intervalId);
+          }
+
+          }, 1000)
+
+    } catch(errorD) {
+      console.log(errorD);
+        if(language.language==='cpp'){
+          setUserOutput(errorD?.response?.data?.err?.stderr);
+        }
+        if(language.language==='python'){
+          setUserOutput(errorD?.response?.data?.err?.error);
+        }
+          
         setLoading(false);
-      });
+    }
+
+      // Axios.post(`http://localhost:8000/run`, {
+      //   code: btoa(userCode),
+      //   language: language.language,
+      //   // input: userInput,
+      // })
+      //   .then((res) => {
+      //     setUserOutput(res.data.jobId);
+      //   })
+      //   .then(() => {
+      //     setLoading(false);
+      //   }).catch(errorD => {
+      //     console.log(errorD)
+      //     if(language.language==='cpp'){
+      //       setUserOutput(errorD?.response?.data?.err?.stderr);
+      //     }
+      //     if(language.language==='python'){
+      //       setUserOutput(errorD?.response?.data?.err?.error);
+      //     }
+          
+      //     setLoading(false);
+
+      //     setInterval(async () => {
+      //       const {data: dataRes} = await Axios.get(`http://localhost:8000/status`, {params: {id: res.data.jobId}})
+      //     }, 1000)
+      // })
   }
 
-  function clearOutput() {}
+  // console.log(userOutput)
+
+  // function clearOutput() {}
 
   return (
     <div className="App">
       <div className="navbar">
+        {/* <label htmlFor="">Select Language:</label>
+        <select value={language} onChange={(e) => {setLanguage({language: e.target.value.language, template: e.target.value.template}); console.log(e.target.value)}}>
+          <option value={cpp} >C++</option>
+          <option value={c}>C</option>
+          <option value={python}>Python</option>
+          <option value={java}>Java</option>
+        </select> */}
         <button onClick={() => setLanguage(c)}>C</button>
         <button onClick={() => setLanguage(cpp)}>C++</button>
         <button onClick={() => setLanguage(java)}>Java</button>
@@ -113,10 +202,13 @@ int main()
           {/* Input Box */}
           <p>Input:</p>
           <div className="right__input">
-            <textarea
+            <p>{status}</p>
+            <p>{jobId && `JobId: ${jobId}`}</p>
+            {/* <textarea
               id="code-inp"
               onChange={(e) => setUserInput(e.target.value)}
-            ></textarea>
+            >
+            </textarea> */}
           </div>
 
           {/* Output Box */}
@@ -132,7 +224,7 @@ int main()
               <pre>{userOutput}</pre>
               <button
                 onClick={() => {
-                  clearOutput();
+                  setUserOutput("");
                 }}
                 className="button__clear"
               >
