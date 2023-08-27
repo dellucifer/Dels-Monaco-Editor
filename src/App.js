@@ -2,7 +2,7 @@ import { useState } from "react";
 import "./App.css";
 import { Editor } from "@monaco-editor/react";
 import { FadeLoader } from "react-spinners";
-// import Axios from "axios";
+// import Axios from "axios"; -------> Again fk axios
 
 function App() {
   const options = {
@@ -53,14 +53,15 @@ int main()
   };
 
   const [language, setLanguage] = useState(cpp);
-  const [userInput, setUserInput] = useState("");
   const [userOutput, setUserOutput] = useState("");
   const [loading, setLoading] = useState(false);
   const [userCode, setUserCode] = useState(``);
   const [status, setStatus] = useState("");
   const [jobId, setJobId] = useState("")
+  const [colour, setColour] = useState("white")
 
   const compile = async () => {
+    setColour("white")
     setLoading(true);
     if (userCode === ``) {
       setLoading(false);
@@ -87,7 +88,7 @@ int main()
     })
 
     const res = await data.json();
-    console.log(res)
+    // console.log(res)
     setJobId(res.jobId);
     setLoading(false);
     let intervalId;
@@ -98,7 +99,7 @@ int main()
             method: "GET",
           })
           const resData = await fetchJob.json();
-          console.log(resData);
+          // console.log(resData);
           const {success, job, error} = resData;
 
           if(success){
@@ -107,6 +108,7 @@ int main()
             if(jobStatus==='pending') return;
 
             setUserOutput(jobOutput);
+            setColour("#03fc45");
             clearInterval(intervalId);
           } else {
             setStatus("Error!")
@@ -119,57 +121,21 @@ int main()
 
     } catch(errorD) {
       console.log(errorD);
-        if(language.language==='cpp'){
+        if(language.language==='cpp' || language.language==='c'){
           setUserOutput(errorD?.response?.data?.err?.stderr);
         }
         if(language.language==='python'){
           setUserOutput(errorD?.response?.data?.err?.error);
         }
-          
+        setColour("red")
         setLoading(false);
     }
-
-      // Axios.post(`http://localhost:8000/run`, {
-      //   code: btoa(userCode),
-      //   language: language.language,
-      //   // input: userInput,
-      // })
-      //   .then((res) => {
-      //     setUserOutput(res.data.jobId);
-      //   })
-      //   .then(() => {
-      //     setLoading(false);
-      //   }).catch(errorD => {
-      //     console.log(errorD)
-      //     if(language.language==='cpp'){
-      //       setUserOutput(errorD?.response?.data?.err?.stderr);
-      //     }
-      //     if(language.language==='python'){
-      //       setUserOutput(errorD?.response?.data?.err?.error);
-      //     }
-          
-      //     setLoading(false);
-
-      //     setInterval(async () => {
-      //       const {data: dataRes} = await Axios.get(`http://localhost:8000/status`, {params: {id: res.data.jobId}})
-      //     }, 1000)
-      // })
   }
 
-  // console.log(userOutput)
-
-  // function clearOutput() {}
 
   return (
     <div className="App">
       <div className="navbar">
-        {/* <label htmlFor="">Select Language:</label>
-        <select value={language} onChange={(e) => {setLanguage({language: e.target.value.language, template: e.target.value.template}); console.log(e.target.value)}}>
-          <option value={cpp} >C++</option>
-          <option value={c}>C</option>
-          <option value={python}>Python</option>
-          <option value={java}>Java</option>
-        </select> */}
         <button onClick={() => setLanguage(c)}>C</button>
         <button onClick={() => setLanguage(cpp)}>C++</button>
         <button onClick={() => setLanguage(java)}>Java</button>
@@ -200,9 +166,8 @@ int main()
         {/* Right Container */}
         <div className="right__container">
           {/* Input Box */}
-          <p>Input:</p>
           <div className="right__input">
-            <p>{status}</p>
+            <p style={{color: colour}}>{status}</p>
             <p>{jobId && `JobId: ${jobId}`}</p>
             {/* <textarea
               id="code-inp"
@@ -212,7 +177,7 @@ int main()
           </div>
 
           {/* Output Box */}
-          <p>Output:</p>
+          <p style={{fontWeight: 600}}>Output:</p>
           {loading ? (
             <div className="spinner__box">
               <div>
