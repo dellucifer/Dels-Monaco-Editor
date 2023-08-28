@@ -1,70 +1,58 @@
-# Getting Started with Create React App
+# Del's-Monaco-Editor
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Description
+Del's Monaco Editor is an online IDE. This IDE compiles and interpretes the code written in it. It has many awesome features which I have described in further points. This IDE currently supports `C`, `C++` and `Python`.
 
-## Available Scripts
+### Technologies
+- MongoDB
+- ExpressJs
+- ReactJs
+- NodeJs
+- Bull library for Load Balancing
+- APIs
+- Multiple langugage support (`C`, `C++` and `Python`)
 
-In the project directory, you can run:
+## Features
+### VS Code theme UI
+I have tried to make its theme more like that of VS Code to retains the familiarity with the VS Code. This UI consists of the editor section, status section and the output section.
+<p align="center">
+  <img src="https://raw.githubusercontent.com/dellucifer/Dels-Monaco-Editor/master/public/editor_landing.jpg" alt="Loading...">
+</p>
+<hr>
 
-### `npm start`
+### Editor Features
+These include:
+- Syntax highlighting
+- Auto complete of basic syntaxes
+- Proper formatting of code
+- Hierarchical
+- VS Code shortcuts 
+- Increases productivity
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+### Editor and code glimpses
+Here I have written a sample code in `C++` having a loop. It will print 1 to 5 in different lines. You can see the hierarchy and syntax highlighting.
+<p align="center">
+  <img src="https://raw.githubusercontent.com/dellucifer/Dels-Monaco-Editor/master/public/editor_code.jpg" alt="Loading...">
+</p>
+<hr>
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+### Output section
+As expected, the code will be 1 to 5 printed in different lines. This output is coming from the APIs written in `Node` at the backend.
+<p align="center">
+  <img src="https://raw.githubusercontent.com/dellucifer/Dels-Monaco-Editor/master/public/editor_outpur.jpg" alt="Loading...">
+  <hr>
+  <img src="https://raw.githubusercontent.com/dellucifer/Dels-Monaco-Editor/master/public/editor_python.jpg" alt="Loading...">
+</p>
+<hr>
 
-### `npm test`
+### Load Balancing
+I have used `Bull` library to make it balance the load. It consists of a `queue` data structure which takes in the request and have the capability to give output to 5 users simultaneouly. Then it will look for other requests in the queue to execute them using the node chile processes.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### Status and IDs
+It also facilitates the user of the current state of their code by showing them the status of their request. If it shows `success`, it means the server has returned the output without any error in the code and the network. `pending` shows the code is getting compiled or interpreting on the server. It shows `error` status when the code throws an error or failed to executed.
+<p align="center">
+  <img src="https://raw.githubusercontent.com/dellucifer/Dels-Monaco-Editor/master/public/editor_status.jpg" alt="Loading...">
+</p>
+<hr>
 
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+Made with Love by Dellucifer
